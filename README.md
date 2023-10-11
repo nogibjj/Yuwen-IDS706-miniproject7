@@ -1,12 +1,14 @@
-# Yuwen-Cai-week5-mini-repo  
+# Yuwen-Cai-week7-mini-repo  
 
 [![cicd](https://github.com/nogibjj/Yuwen-IDS706-miniproject5/actions/workflows/cicd.yml/badge.svg)](https://github.com/nogibjj/Yuwen-IDS706-miniproject5/actions/workflows/cicd.yml)  
 
-This is a repo template for course 706_Data_Engineering Week 5 Mini Project. This objective was to create a Python script that interacts with an SQL database.
+This is a repo template for course 706_Data_Engineering Week 7 Mini Project. This objective was to create Package a Python script into a command-line tool and write a user guide.
 
 # Purpose
-- Create a SQL database with Python
-- Perform CRUD operations
+- Package a Python script with setup tools or a similar tool
+- Include a user guide on how to install and use the tool
+- Include communication with an external or internal database (NoSQL, SQL, etc)
+
 
 
 ## Preparation
