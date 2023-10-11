@@ -95,3 +95,6 @@ python main.py --help
 ### Results:
 1. passing make test result
 ![Alt text](<make_test_result.png>)
+
+2. passing make test in GitHub Actions:
+![Alt text](<make_test_passing.png>)
