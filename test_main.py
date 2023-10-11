@@ -1,6 +1,9 @@
+import click
 from main import create_connection, create_table, insert_user
 from main import get_user_by_username, update_user_email, delete_user
 from main import select_all_users, select_person_with_shortest_email
+from main import main
+
 def test_insert_user():
     database_file = "test_database.db"
     connection = create_connection(database_file)
@@ -70,9 +73,12 @@ def test_select_all_users():
     assert len(users) == 3  # Assert the number of retrieved users
 
 
-if __name__ == "__main__":
+def main():
     test_insert_user()
     test_update_user_email()
     test_delete_user()
     test_select_person_with_shortest_email()
     test_select_all_users()
+
+if __name__ == "__main__":
+    main()

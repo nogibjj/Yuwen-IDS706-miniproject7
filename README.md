@@ -1,6 +1,6 @@
 # Yuwen-Cai-week7-mini-repo  
 
-[![cicd](https://github.com/nogibjj/Yuwen-IDS706-miniproject5/actions/workflows/cicd.yml/badge.svg)](https://github.com/nogibjj/Yuwen-IDS706-miniproject5/actions/workflows/cicd.yml)  
+[![cicd](https://github.com/nogibjj/Yuwen-IDS706-miniproject7/actions/workflows/cicd.yml/badge.svg)](https://github.com/nogibjj/Yuwen-IDS706-miniproject7/actions/workflows/cicd.yml)  
 
 This is a repo template for course 706_Data_Engineering Week 7 Mini Project. This objective was to create Package a Python script into a command-line tool and write a user guide.
 
@@ -8,7 +8,6 @@ This is a repo template for course 706_Data_Engineering Week 7 Mini Project. Thi
 - Package a Python script with setup tools or a similar tool
 - Include a user guide on how to install and use the tool
 - Include communication with an external or internal database (NoSQL, SQL, etc)
-
 
 
 ## Preparation
@@ -22,82 +21,77 @@ This is a repo template for course 706_Data_Engineering Week 7 Mini Project. Thi
 ## Code Location
 You can find all the relevant code in Python with SQL database in main.py
 
-Snippets of some SQL functions are excerpted below:
+Except of Using Click to Build a Command-Line Tool:
 
 For the "CRUD" with database part:
 
-### connect 
+### main.py using Click argument with database name setting 
 ```python
-def create_connection(db_file):
-    conn = None
-    try:
-        conn = sqlite3.connect(db_file)
-        return conn
-    except sqlite3.Error as e:
-        print(e)
-```
+@click.command()
+@click.argument("database_file")
+def main(database_file):
+    connection = create_connection(database_file)
+    if connection:
+        create_table(connection)
+        # Create a new user
+        insert_user(connection, "JohnDoe", "john@example.com")
+        # Read a user
+        user = get_user_by_username(connection, "JohnDoe")
+        if user:
+            print("User found:", user)
+        # Update user email
+        update_user_email(connection, "JohnDoe", "new_email@example.com")
+        # Read the updated user
+        updated_user = get_user_by_username(connection, "JohnDoe")
+        if updated_user:
+            print("Updated user:", updated_user)
+        # Delete the user
+        delete_user(connection, "JohnDoe")
+        # user with shortest email
+        insert_user(connection, "Apple", "a@example.com")
+        insert_user(connection, "Banana", "Banana@example.com")
+        insert_user(connection, "Orange", "ora@example.com")
+        person = select_person_with_shortest_email(connection)
+        if person:
+            print("Person with the shortest email:")
+            print("User ID:", person[0])
+            print("Username:", person[1])
+            print("Email:", person[2])
+        else:
+            print("No users in the database.")
+        # select all users
+        users = select_all_users(connection)
+        for user in users:
+            print("User ID:", user[0])
+            print("Username:", user[1])
+            print("Email:", user[2])
 
-### create
-```python
-def create_table(conn):
-    try:
-        cursor = conn.cursor()
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY,
-                username TEXT NOT NULL,
-                email TEXT NOT NULL
-            )
-        ''')
-    except sqlite3.Error as e:
-        print(e)
-```
+        connection.close()
 
-### insert
-```python
-def insert_user(conn, username, email):
-    try:
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO users (username, email) VALUES (?, ?)",
-                        (username, email))
-        conn.commit()
-    except sqlite3.Error as e:
-        print(e)
-```
 
-### update
-```python
-def update_user_email(conn, username, new_email):
-    try:
-        cursor = conn.cursor()
-        cursor.execute("UPDATE users SET email=? WHERE username=?",
-                        (new_email, username))
-        conn.commit()
-    except sqlite3.Error as e:
-        print(e)
-```
 
-### delete
-```python
-def delete_user(conn, username):
-    try:
-        cursor = conn.cursor()
-        cursor.execute("DELETE FROM users WHERE username=?", (username,))
-        conn.commit()
-    except sqlite3.Error as e:
-        print(e)
+if __name__ == "__main__":
+    main()
 ```
 
 
-All the functions are tested in test_main.py
+### Usages
+1. To create a sample database with name inputed:
+ ```bash
+python main.py <database_name>
+```
+![Alt text](<cml_regular.png>)
 
-### Two Query Function
-1. select all users from the database
-2. choose the person with shortest email
+2. To see the guide, run
+```bash
+python main.py --help
+```
+![Alt text](<cml_help.png>)
 
-### result:
-Result Running main.py:
-![Alt text](<test_result.png>)
+3. Free Error Importing when argument not correct
+![Alt text](<error_importing.png>)
 
-Result Running make test:
-![Alt text](<main_result.png>)
+
+### Results:
+1. passing make test result
+![Alt text](<make_test_result.png>)
